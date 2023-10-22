@@ -1,0 +1,49 @@
+---
+# tasks file for get_the_project_dir_ready
+
+  - name: Create temp dir and dir for a project
+    file:
+      path: "{{ projects_terraform_dir }}"
+      state: directory
+
+    loop:
+      - "{{ projects_terraform_dir }}"
+      - "{{ temp_dir }}"
+
+  - name: Templates for terraform
+    template:
+      src: "{{ item }}"
+      dest: "{{ projects_terraform_dir }}"
+
+    loop:
+      - net_and_pool.tf
+      - main.tf
+      - masters.tf
+      - workers.tf
+
+  - name: Download images
+    get_url:
+      url: "{{ download_debian }}"
+      dest: "{{ projects_terraform_dir }}"
+      setype: https
+
+  - name: copy id_rsa.pub
+    template:
+      src: id_rsa.pub
+      dest: "{{ temp_dir }}/id_rsa.pub"
+
+  - name: Prepare images set password, uninstall sshd, ainstall sshd, add ssh key and truncate machine-id
+    command: "{{ item }}"
+    args:
+      chdir: "{{ projects_terraform_dir }}"
+
+    loop:
+      - "virt-customize -a {{ projects_terraform_dir }}/{{ debian_name }} --root-password password:root"
+      - "virt-customize -a {{ projects_terraform_dir }}/{{ debian_name }} --uninstall openssh-server"
+      - "virt-customize -a {{ projects_terraform_dir }}/{{ debian_name }} --install openssh-server"
+      -  "virt-customize -a {{ projects_terraform_dir }}/{{ debian_name }} --ssh-inject root:file:{{ temp_dir }}/id_rsa.pub"
+      -  "virt-customize -a {{ projects_terraform_dir }}/{{ debian_name }} --truncate /etc/machine-id"
+
+#  - name: delete temp
+#    state: absent
+#    path: "{{ temp_dir }}"

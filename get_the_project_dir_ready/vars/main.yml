@@ -1,0 +1,10 @@
+---
+# vars file for get_the_project_dir_ready
+
+    download_debian: https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-nocloud-amd64.qcow2
+    debian_name: debian-12-nocloud-amd64.qcow2
+
+    projects_terraform_dir: /home/vlad/kuber_project
+    temp_dir: /home/vlad/temp
+    user: vlad
+

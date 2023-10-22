@@ -1,0 +1,5 @@
+- name: Playbook Install ALL
+  hosts: all
+  become: yes
+  roles:
+    - get_the_project_dir_ready
