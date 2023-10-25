@@ -25,8 +25,8 @@ resource "libvirt_volume" "big-kub_master_1-qcow2" {
 
 resource "libvirt_domain" "kub_master_1" {
   name   = "kub_master_1"
-  memory = "1048"
-  vcpu   = 1
+  memory = "2048"
+  vcpu   = 2
   autostart = true
 
   network_interface {
@@ -47,3 +47,11 @@ resource "libvirt_domain" "kub_master_1" {
   }
 
 }
+
+resource "hosts_record" "kub_master_1" {
+    address = "192.168.10.2"
+    names   = [ "kubmaster1", "kubmaster1.local" ]
+    comment = "server kub_master_1"
+    notes   = "a kubernetes master server"
+}
+

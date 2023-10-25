@@ -3,8 +3,12 @@ terraform {
     libvirt = {
       source = "hashicorp/libvirt"
     }
+    hosts = {
+      source = "hashicorp/hosts"
+    }
   }
 }
+ 
 
 provider "libvirt" {
   ## Configuration options
@@ -13,4 +17,8 @@ provider "libvirt" {
   #uri   = "qemu+ssh://root@192.168.100.10/system"
 }
 
+provider "hosts" {
+    file = "/etc/hosts"
+    zone = "myzone"
+}
 

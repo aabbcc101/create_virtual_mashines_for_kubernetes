@@ -25,8 +25,8 @@ resource "libvirt_volume" "big-kub_worker_1-qcow2" {
 
 resource "libvirt_domain" "kub_worker_1" {
   name   = "kub_worker_1"
-  memory = "1048"
-  vcpu   = 1
+  memory = "2048"
+  vcpu   = 2
   autostart = true
 
   network_interface {
@@ -48,6 +48,12 @@ resource "libvirt_domain" "kub_worker_1" {
 
 }
 
+resource "hosts_record" "kub_worker_1" {
+    address = "192.168.10.11"
+    names   = [ "kubworker1", "kubworker1.local" ]
+    comment = "server kub_worker_1"
+    notes   = "a kubernetes worker server"
+}
 
 #####
 
@@ -75,8 +81,8 @@ resource "libvirt_volume" "big-kub_worker_2-qcow2" {
 
 resource "libvirt_domain" "kub_worker_2" {
   name   = "kub_worker_2"
-  memory = "1048"
-  vcpu   = 1
+  memory = "2048"
+  vcpu   = 2
   autostart = true
 
   network_interface {
@@ -96,5 +102,12 @@ resource "libvirt_domain" "kub_worker_2" {
     target_port = "0"
   }
 
+}
+
+resource "hosts_record" "kub_worker_2" {
+    address = "192.168.10.12"
+    names   = [ "kubworker2", "kubworker2.local" ]
+    comment = "server kub_worker_2"
+    notes   = "a kubernetes worker server"
 }
 
