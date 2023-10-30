@@ -7,9 +7,7 @@
 
 resource "libvirt_network" "kub_net" {
   name      = "kub_net"
-#  mode      = "bridge"
-#  bridge    =  "br0"
-#  domain    = "test.net"
+  autostart = true
   addresses = ["192.168.10.0/24"]
   dhcp {
     enabled = true

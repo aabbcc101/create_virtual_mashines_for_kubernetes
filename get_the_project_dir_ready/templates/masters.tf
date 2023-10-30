@@ -55,3 +55,26 @@ resource "hosts_record" "kub_master_1" {
     notes   = "a kubernetes master server"
 }
 
+resource iptables_rules rules-front {
+  name           = "rules-front"
+  project        = "FORWARD"
+  on_cidr_blocks = ["192.168.10.2"]
+  ingress {
+    protocol = "tcp"
+    to_port  = "22"
+    state = "NEW"
+    action = "ACCEPT"
+  }
+}
+
+resource iptables_nat dnat-front_http {
+  name           = "dnat-front_http"
+  on_cidr_blocks = ["192.168.1.12"]
+  dnat {
+    iface    = "enp4s0"
+    protocol = "tcp"
+    to_port  = "30555"
+    nat_ip   = "192.168.10.2:22"
+  }
+}
+
